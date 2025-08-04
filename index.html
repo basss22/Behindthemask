@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dead Behind The Mask</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-gold: #d4af37;
+            --dark-red: #8b0000;
+            --deep-black: #0a0a0a;
+            --rich-burgundy: #722f37;
+            --antique-white: #faf0e6;
+            --shadow-gold: rgba(212, 175, 55, 0.4);
+            --blood-red: #660000;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: #0a0a0a;
+            color: var(--antique-white);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Enhanced mobile-optimized background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at bottom right, rgba(139, 0, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at center, rgba(114, 47, 55, 0.15) 0%, transparent 60%),
+                linear-gradient(180deg, 
+                    var(--deep-black) 0%, 
+                    #1a0f0f 20%, 
+                    #2d1418 40%, 
+                    #1a0f0f 60%, 
+                    var(--deep-black) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Subtle texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(212, 175, 55, 0.03) 2px,
+                    rgba(212, 175, 55, 0.03) 4px
+                );
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Institutional logo - mobile optimized */
+        .institution-logo {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            z-index: 100;
+            opacity: 0.85;
+            transition: all 0.3s ease;
+        }
+
+        .institution-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 1.5px solid var(--primary-gold);
+            background: rgba(0,0,0,0.7);
+            padding: 3px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        /* Mobile-optimized particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            animation: floatMobile 15s infinite ease-in-out;
+            opacity: 0.4;
+            box-shadow: 0 0 4px var(--primary-gold);
+        }
+
+        @keyframes floatMobile {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px); 
+                opacity: 0.2; 
+            }
+            50% { 
+                transform: translateY(-30px) translateX(10px); 
+                opacity: 0.6; 
+            }
+        }
+
+        /* Corner decorations - mobile sized */
+        .corner-decoration {
+            position: fixed;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .corner-decoration::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--primary-gold);
+            opacity: 0.2;
+        }
+
+        .corner-top-right {
+            top: 10px;
+            right: 10px;
+        }
+
+        .corner-top-right::before {
+            border-left: none;
+            border-bottom: none;
+            border-top-right-radius: 10px;
+        }
+
+        .corner-bottom-left {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .corner-bottom-left::before {
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+        }
+
+        .corner-bottom-right {
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .corner-bottom-right::before {
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 10px;
+        }
+
+        /* Header - mobile optimized without 3D effects */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            background: 
+                linear-gradient(180deg, 
+                    rgba(0,0,0,0.9) 0%, 
+                    rgba(0,0,0,0.7) 50%, 
+                    rgba(0,0,0,0.3) 100%);
+            overflow: hidden;
+        }
+
+        .header-characters {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 150px;
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+            z-index: 2;
+        }
+
+        .header-character-left {
+            left: -20px;
+            animation: slideInLeftMobile 2s ease-out 0.5s forwards;
+        }
+
+        .header-character-right {
+            right: -20px;
+            animation: slideInRightMobile 2s ease-out 0.7s forwards;
+        }
+
+        .header-characters img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(20%) saturate(0.8);
+            opacity: 0.8;
+        }
+
+        @keyframes slideInLeftMobile {
+            from { opacity: 0; transform: translateY(-50%) translateX(-30px); }
+            to { opacity: 0.3; transform: translateY(-50%) translateX(0); }
+        }
+
+        @keyframes slideInRightMobile {
+            from { opacity: 0; transform: translateY(-50%) translateX(30px); }
+            to { opacity: 0.3; transform: translateY(-50%) translateX(0); }
+        }
+
+        .main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-gold);
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.8), 
+                0 0 15px var(--blood-red),
+                0 0 25px rgba(212, 175, 55, 0.2);
+            margin-bottom: 0.8rem;
+            opacity: 0;
+            animation: titleRevealMobile 2s ease-out 0.3s forwards;
+            position: relative;
+            z-index: 5;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--antique-white);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1s forwards;
+            position: relative;
+            z-index: 5;
+            max-width: 280px;
+            margin: 0 auto 1.5rem auto;
+            line-height: 1.4;
+            font-weight: 400;
+            padding: 0 1rem;
+        }
+
+        .ornament {
+            font-size: 1.5rem;
+            color: var(--primary-gold);
+            margin: 0.8rem 0;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease-out 1.5s forwards;
+            position: relative;
+            z-index: 5;
+            text-shadow: 0 0 10px var(--primary-gold);
+        }
+
+        @keyframes titleRevealMobile {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navigation - mobile optimized */
+        .nav-container {
+            position: relative;
+            z-index: 10;
+            max-width: 100%;
+            padding: 1rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .nav-btn {
+            background: linear-gradient(145deg, var(--rich-burgundy), var(--dark-red));
+            color: var(--primary-gold);
+            border: 1.5px solid var(--primary-gold);
+            padding: 0.8rem 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.98);
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Main content area - mobile optimized */
+        .content {
+            position: relative;
+            z-index: 10;
+            max-width: 100%;
+            padding: 1rem;
+        }
+
+        /* Character cards - mobile optimized */
+        .characters-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .character-card {
+            background: linear-gradient(145deg, rgba(20,20,20,0.95), rgba(114,47,55,0.6));
+            border: 1.5px solid var(--primary-gold);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardRevealMobile 0.6s ease-out forwards;
+        }
+
+        .character-card:nth-child(1) { animation-delay: 0.1s; }
+        .character-card:nth-child(2) { animation-delay: 0.2s; }
+        .character-card:nth-child(3) { animation-delay: 0.3s; }
+        .character-card:nth-child(4) { animation-delay: 0.4s; }
+        .character-card:nth-child(5) { animation-delay: 0.5s; }
+        .character-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes cardRevealMobile {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--shadow-gold) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .character-card:active {
+            transform: scale(0.98);
+        }
+
+        .character-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(0,0,0,0.8));
+            border: 2px solid var(--primary-gold);
+            position: relative;
+        }
+
+        .character-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        .character-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-gold);
+            margin-bottom: 0.4rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .character-role {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--antique-white);
+            margin-bottom: 0.6rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .character-age {
+            font-size: 0.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .character-description {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--antique-white);
+            margin-bottom: 1rem;
+            opacity: 0.85;
+        }
+
+        .character-motive {
+            background: rgba(139, 0, 0, 0.2);
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid var(--blood-red);
+        }
+
+        .motive-title {
+            font-size: 0.75rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .motive-text {
+            font-size: 0.8rem;
+            color: var(--antique-white);
+            line-height: 1.4;
+        }
+
+        .clues-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .clues-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 0.4rem;
+            border-radius: 5px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 1px solid transparent;
+        }
+
+        .clues-title:active {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--primary-gold);
+        }
+
+        .clues-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .clues-content.revealed {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        .clue-item {
+            background: rgba(0,0,0,0.3);
+            padding: 0.7rem;
+            margin: 0.4rem 0;
+            border-left: 2px solid var(--primary-gold);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            transform: translateX(-10px);
+            opacity: 0;
+            animation: slideInClueMobile 0.4s ease forwards;
+        }
+
+        .clue-item:nth-child(1) { animation-delay: 0.1s; }
+        .clue-item:nth-child(2) { animation-delay: 0.15s; }
+        .clue-item:nth-child(3) { animation-delay: 0.2s; }
+        .clue-item:nth-child(4) { animation-delay: 0.25s; }
+
+        @keyframes slideInClueMobile {
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .victim-card {
+            background: linear-gradient(145deg, rgba(139, 0, 0, 0.3), rgba(20,20,20,0.95));
+            border: 2px solid var(--blood-red);
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .victim-card .character-name {
+            color: var(--blood-red);
+            text-shadow: 0 0 8px var(--blood-red);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--primary-gold);
+            border: 1.5px solid var(--primary-gold);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .back-btn:active {
+            background: var(--primary-gold);
+            color: var(--deep-black);
+            transform: scale(0.98);
+        }
+
+        /* Enhanced mobile animations */
+        @media (min-width: 768px) {
+            .main-title { font-size: 3rem; }
+            .subtitle { font-size: 1.1rem; max-width: 500px; }
+            .character-card { padding: 2rem; }
+            .character-avatar { width: 120px; height: 120px; }
+            .characters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Loading state for images */
+        .character-avatar.loading {
+            background: linear-gradient(45deg, rgba(212, 175, 55, 0.2), rgba(139, 0, 0, 0.2));
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Institutional Logo -->
+    <div class="institution-logo">
+        <img src="https://imgs.search.brave.com/HRK4arpUMYeAyrsT9fOntji5Lj_goPRLjVt3ODrEUi0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmF4/aXNiYXJyYW5jYWJl/cm1lamEuZWR1LmNv/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDI1/LzAyL0xvZ29zLVBy/YXhpcy5wbmc" alt="Institution Logo">
+    </div>
+
+    <!-- Corner Decorations -->
+    <div class="corner-decoration corner-top-right"></div>
+    <div class="corner-decoration corner-bottom-left"></div>
+    <div class="corner-decoration corner-bottom-right"></div>
+
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main page -->
+    <div id="mainPage">
+        <header class="header">
+            <!-- Character images for header decoration -->
+            <div class="header-characters header-character-left">
+                <img src="https://i.imgur.com/MVkLdf0.png" alt="Mystery Character">
+            </div>
+            <div class="header-characters header-character-right">
+                <img src="https://i.imgur.com/xIcZkRw.png" alt="Mystery Character">
+            </div>
+            
+            <h1 class="main-title">Dead Behind The Mask</h1>
+            <div class="ornament">♦</div>
+            <p class="subtitle">A deadly masquerade - interactive whodunit for A2 english students</p>
+            <div class="ornament">⚜</div>
+        </header>
+
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showAllCharacters()">View All Characters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All characters page -->
+    <div id="charactersPage" class="content hidden">
+        <button class="back-btn" onclick="showMainPage()">← Back to Main</button>
+        <div class="characters-grid" id="charactersGrid">
+            <!-- Character cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Character data with image URLs (broken URLs for you to replace)
+        const charactersData = {
+            "VICTIM": {
+                name: "Victoria Sterling",
+                role: "The Victim",
+                age: 45,
+                imageUrl: "https://broken-url.com/victoria-sterling.jpg",
+                description: "Wealthy socialite who hosted the annual masked ball. Known for being assertive, controlling, and secretive.",
+                motive: "Found dead during the masquerade ball blackout",
+                clues: [
+                    "Was tense and distracted during the evening before her death",
+                    "Had discovered Ruby's embezzlement and planned to expose her",
+                    "Was suffering from a terminal illness (kept secret from everyone)",
+                    "Had been blackmailing several guests about their secrets"
+                ]
+            },
+            "JAMES": {
+                name: "James Hartwell",
+                role: "Business Partner",
+                age: 50,
+                imageUrl: "https://broken-url.com/james-hartwell.jpg",
+                description: "Victoria's business partner who opposed a major merger that would have cost him significantly.",
+                motive: "Financial gain by stopping a merger he strongly opposed",
+                clues: [
+                    "Was alone at the drinks table during the blackout",
+                    "Had the most to lose financially from Victoria's planned merger",
+                    "His alibi depends on Dr. Cross, but their stories don't match",
+                    "Would gain significantly if Victoria's business deal was stopped"
+                ]
+            },
+            "DIANA": {
+                name: "Diana Blackwood",
+                role: "Younger Sister",
+                age: 38,
+                imageUrl: "https://broken-url.com/diana-blackwood.jpg",
+                description: "Victoria's younger sister who stood to inherit everything upon her death.",
+                motive: "Inheritance - would receive Victoria's entire fortune",
+                clues: [
+                    "Stood to inherit Victoria's entire estate",
+                    "Was by the stairs with Ruby during blackout",
+                    "Seems genuinely shocked by the murder",
+                    "Her alibi is partially contradicted by Ruby's confession"
+                ]
+            },
+            "EDMUND": {
+                name: "Professor Edmund Grey",
+                role: "Former Teacher",
+                age: 62,
+                imageUrl: "https://broken-url.com/edmund-grey.jpg",
+                description: "Respected professor who had been blackmailed by Victoria over stolen manuscripts.",
+                motive: "Victoria had stolen rare documents and was blackmailing him",
+                clues: [
+                    "Victoria had stolen rare manuscripts from his collection",
+                    "Was being blackmailed to keep quiet about the theft",
+                    "Was near the bookshelf during the blackout",
+                    "His alibi through Lord Percival is weak and indirect"
+                ]
+            },
+            "RUBY": {
+                name: "Ruby Martinez",
+                role: "Personal Assistant",
+                age: 28,
+                imageUrl: "https://broken-url.com/ruby-martinez.jpg",
+                description: "Victoria's personal assistant who had been embezzling money and was about to be exposed.",
+                motive: "Victoria discovered her embezzlement - facing public exposure and prison",
+                clues: [
+                    "THE ACTUAL KILLER - Used the blackout to murder Victoria",
+                    "Had been embezzling money from Victoria's accounts",
+                    "Was going to be publicly exposed that very night",
+                    "Lied about her whereabouts during the blackout"
+                ]
+            },
+            "PERCIVAL": {
+                name: "Lord Percival Ashworth",
+                role: "Ex-Fiancé",
+                age: 47,
+                imageUrl: "https://broken-url.com/percival-ashworth.jpg",
+                description: "Victoria's former fiancé who was secretly bankrupt and being blackmailed about it.",
+                motive: "Victoria was blackmailing him about his secret bankruptcy",
+                clues: [
+                    "Was secretly bankrupt despite maintaining wealthy appearance",
+                    "Victoria was blackmailing him about his financial ruin",
+                    "Was alone by the fireplace during blackout",
+                    "Appeared paranoid and possibly vengeful toward Victoria"
+                ]
+            },
+            "JASON": {
+                name: "Dr. Jason Cross",
+                role: "Family Doctor",
+                age: 54,
+                imageUrl: "https://broken-url.com/jason-cross.jpg",
+                description: "The family doctor who had covered up Victoria's terminal illness and falsified records.",
+                motive: "Had falsified medical records and covered up Victoria's illness",
+                clues: [
+                    "Had covered up Victoria's terminal illness diagnosis",
+                    "Risked exposure of serious professional misconduct",
+                    "Was near the drinks table during blackout",
+                    "His story doesn't align with James Hartwell's account"
+                ]
+            },
+            "MARCUS": {
+                name: "Marcus Wilde",
+                role: "Nephew",
+                age: 32,
+                imageUrl: "https://broken-url.com/marcus-wilde.jpg",
+                description: "Victoria's nephew with serious gambling debts who had just been refused help.",
+                motive: "Victoria refused to help with dangerous gambling debts",
+                clues: [
+                    "Owed dangerous people large sums of money from gambling",
+                    "Victoria had just refused to help him with his debts",
+                    "Was near the window with Isabella during blackout",
+                    "Showed obvious signs of stress and paranoia throughout evening"
+                ]
+            },
+            "ISABELLA": {
+                name: "Isabella Fontaine",
+                role: "Business Rival",
+                age: 41,
+                imageUrl: "https://broken-url.com/isabella-fontaine.jpg",
+                description: "Victoria's business rival who recently lost a major lawsuit and was facing bankruptcy.",
+                motive: "Legal and financial losses caused by Victoria",
+                clues: [
+                    "Recently lost a major lawsuit to Victoria",
+                    "Was facing bankruptcy due to Victoria's actions",
+                    "Had access to sensitive information about Victoria's business calls",
+                    "Appeared calm but may have been hiding deeper resentment"
+                ]
+            },
+            "WATSON": {
+                name: "Detective Watson",
+                role: "Family Friend & Off-Duty Police",
+                age: 45,
+                imageUrl: "https://broken-url.com/detective-watson.jpg",
+                description: "Off-duty police detective and family friend who was investigating Victoria's criminal activities.",
+                motive: "Victoria's criminal activities threatened his career and reputation",
+                clues: [
+                    "Was investigating Victoria for money laundering",
+                    "Was planning to arrest Victoria that very night",
+                    "Had unclear whereabouts during the blackout",
+                    "May have acted to protect his own career and reputation"
+                ]
+            },
+            "SOPHIA": {
+                name: "Sophia Chen",
+                role: "Art Dealer",
+                age: 36,
+                imageUrl: "https://broken-url.com/sophia-chen.jpg",
+                description: "Art dealer who was being coerced by Victoria to participate in stolen art sales.",
+                motive: "Was being blackmailed to help sell stolen artwork",
+                clues: [
+                    "Had been helping Victoria sell stolen art under blackmail",
+                    "Victoria was demanding 'quick sales' and 'untraceable transactions'",
+                    "Was alone examining artwork during the blackout",
+                    "Feared exposure would ruin her professional reputation"
+                ]
+            }
+        };
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30; // Reduced for mobile performance
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (12 + Math.random() * 6) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Show all characters page
+        function showAllCharacters() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('charactersPage').classList.remove('hidden');
+            
+            // Populate characters grid
+            const grid = document.getElementById('charactersGrid');
+            grid.innerHTML = '';
+
+            Object.entries(charactersData).forEach(([key, character]) => {
+                const card = document.createElement('div');
+                card.className = character.name === 'Victoria Sterling' ? 'character-card victim-card' : 'character-card';
+                
+                card.innerHTML = `
+                    <div class="character-avatar">
+                        <img src="${character.imageUrl}" alt="${character.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23722f37%22 width=%22100%22 height=%22100%22/><text fill=%22%23d4af37%22 font-size=%2240%22 text-anchor=%22middle%22 x=%2250%22 y=%2265%22>${character.name.charAt(0)}</text></svg>'">
+                    </div>
+                    <div class="character-name">${character.name}</div>
+                    <div class="character-role">${character.role}</div>
+                    <div class="character-age">Age: ${character.age}</div>
+                    <div class="character-description">${character.description}</div>
+                    <div class="character-motive">
+                        <div class="motive-title">Motive</div>
+                        <div class="motive-text">${character.motive}</div>
+                    </div>
+                    <div class="clues-section">
+                        <div class="clues-title" onclick="toggleClues(this)">🔍 Reveal Clues</div>
+                        <div class="clues-content">
+                            ${character.clues.map(clue => `<div class="clue-item">${clue}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Show main page
+        function showMainPage() {
+            document.getElementById('charactersPage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+        }
+
+        // Toggle clues visibility
+        function toggleClues(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('revealed');
+            element.textContent = content.classList.contains('revealed') ? '🔍 Hide Clues' : '🔍 Reveal Clues';
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+    </script>
+</body>
+</html>
